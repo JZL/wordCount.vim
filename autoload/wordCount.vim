@@ -44,7 +44,7 @@ function! wordCount#WordCount()
     if g:wc_conservative_update != 1 || s:lastModeWasVisual()
         call wordCount#UpdateWordCount()
     endif
-    return s:wc
+    return string(s:wc/250.0)
 endfunction
 
 function! wordCount#UpdateWordCount()
@@ -57,6 +57,9 @@ function! wordCount#UpdateWordCount()
         let s:buf_cache = bufc
         let s:wc=0
         for line in bufc
+            if line == "<!--"
+               break 
+            endif
             for word in split(line)
                 if s:isWord(word)
                     let s:wc=s:wc+1
